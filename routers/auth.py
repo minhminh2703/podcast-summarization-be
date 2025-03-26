@@ -30,8 +30,8 @@ def signup(user_data: UserCreate, db: Session = Depends(get_db)):
 
 @auth_router.post("/login")
 def login(login_data: UserLogin, db: Session = Depends(get_db)):
-    user = db.query(User).first()
-    print("huhu", user)
+    
+    user = db.query(User).filter(User.email == login_data.email).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
