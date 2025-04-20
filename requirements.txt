@@ -1,0 +1,31 @@
+# NOTE THAT THIS FILE JUST WORK ON MAC
+# --- Web & API ---
+fastapi==0.115.12
+uvicorn==0.34.1
+python-multipart==0.0.20
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+sqlalchemy==2.0.37
+pydantic==2.11.3
+email-validator==2.1.1
+python-dotenv==1.0.1
+pytz==2024.1
+alembic==1.13.1
+
+# --- Whisper & Audio ---
+git+https://github.com/openai/whisper.git
+torch>=2.0.0      
+torchaudio>=2.0.0
+ffmpeg-python==0.2.0
+pydub==0.25.1
+librosa==0.10.1
+
+# --- RSS / YouTube ---
+feedparser==6.0.11
+pytube==15.0.0
+git+https://github.com/yt-dlp/yt-dlp.git
+
+# --- Others ---
+requests==2.31.0
+openai==1.75.0
+

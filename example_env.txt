@@ -1,0 +1,5 @@
+DATABASE_URL=sqlite:///./podcast.db
+SECRET_KEY=your_secret_key_here
+ALGORITHM=HS256
+OPENAI_API_KEY=
+ACCESS_TOKEN_EXPIRE_MINUTES=

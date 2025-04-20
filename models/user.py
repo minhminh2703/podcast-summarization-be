@@ -1,13 +1,19 @@
-# app/models/user.py
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
-from sqlalchemy.sql import func
-from database import Base
+# app/schemas/user.py
+from pydantic import BaseModel, EmailStr
+from uuid import UUID
 
-class User(Base):
-    __tablename__ = "User"
+class UserBase(BaseModel):
+    email: EmailStr
 
-    user_id = Column(Integer, primary_key=True, index=True)
-    email = Column(String(255), unique=True, nullable=False, index=True)
-    hashed_password = Column(Text, nullable=False)
-    create_at = Column(TIMESTAMP, server_default=func.now())
-    profile_picture_url = Column(Text, nullable=True)
+class UserCreate(UserBase):
+    password: str
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserOut(UserBase):
+    userid: UUID
+
+    class Config:
+        from_attribute = True
