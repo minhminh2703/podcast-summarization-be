@@ -48,3 +48,13 @@ app.include_router(podcast_router)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+    # from utils.segmentation import initialize_mini_llm
+    # from utils.segmentation import initialize_miniLM, minilm_topic_segmentation, initialize_embedder
+    # initialize_embedder(model_name="all-MiniLM-L6-v2")
+    # initialize_whisper_model(model_name="tiny")
+    # from service.podcast_service import transcribe_audio
+    # audio_path = r"C:\Users\ACER\Downloads\ricardo_vargas_2025_04_14_negotiation_stuck_en.mp3"
+    # transcript, segment, transcribe_time = transcribe_audio(audio_path)
+    # from service.GPT_service import generate_summary
+    # summary = generate_summary(segment, target_language="English")
+    # print(summary)
