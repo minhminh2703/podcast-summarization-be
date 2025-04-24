@@ -14,25 +14,37 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 BASE_PODCAST_SUMMARY_PROMPT = """
-You are an assistant summarizing a podcast transcript. The transcript is broken into segments, each with a start time, end time, and spoken text.
+You are an assistant summarizing a podcast transcript composed of segments, each with a start time, end time, and spoken text.
 
-Your task is to:
-- Group segments that talk about the same topic.
-- Break into logical sections based on topic transitions.
-- For each section, write a heading and a summary.
-- Each section must include the start time of the first segment and the end time of the last segment.
+Your tasks:
+- Group segments by topic.
+- Split into logical sections when the topic changes.
+- For each section:
+  • Write a concise, clear heading.
+  • Provide a brief summary.
+  • Include the section's start and end time.
 
-Format output exactly like this (repeat for each heading):
+Use this output format (repeat for each section):
 
-Heading {{n}} - {{Heading title}} - {{start_time}} - {{end_time}}
-{{summary for that section}}
+Heading {{n}} - {{Heading title in {language}}} - {{start_time}} - {{end_time}}
+{{summary in {language}}}
 
-After you have listed all sections, write an **overall summary** of the full episode.
-Start the overall summary with the word `Overall` on its own line, so it can be parsed separately.
-Do not include any extra explanation or formatting outside this structure.
+Then, write an **overall summary** of the entire episode:
+- Start it with a new line that says only: `Overall`
+- Write the summary in {language}
+- The overall summary must meet this **minimum word count**, based on total episode duration:
+  • 0–2 minutes: no minimum
+  • 3–5 minutes: at least 50 words
+  • 5–10 minutes: at least 75 words
+  • 10–14 minutes: at least 100 words
+  • 15 minutes or more: at least 125 words
 
-Only return the summary in that format. Do not explain. Start from Heading 1.
+Return only the formatted summary. Do not explain or include anything else.
+
+Transcript:
+{transcript}
 """
+
 
 
 MAP_PROMPT ="""
@@ -92,7 +104,16 @@ def generate_heading_summary(
     transcript = "\n".join(transcript_lines)
 
     # Compose full prompt with language
-    full_prompt = BASE_PODCAST_SUMMARY_PROMPT.strip() + f"\n\nLanguage: {target_language}\n\nHere is the transcript:\n{transcript}"
+    # full_prompt = BASE_PODCAST_SUMMARY_PROMPT.strip() + f"\n\nLanguage: {target_language}\n\nHere is the transcript:\n{transcript}"
+    prompt_template = PromptTemplate(
+        input_variables=["transcript", "language"],
+        template=BASE_PODCAST_SUMMARY_PROMPT.strip()
+    )
+
+    rendered_prompt = prompt_template.format(
+    transcript=transcript,
+    language=target_language
+)
 
     # Call chat completion API
     response = client.chat.completions.create(
@@ -100,7 +121,7 @@ def generate_heading_summary(
         temperature=0.3,
         messages=[
             {"role": "system", "content": "You are a helpful assistant that summarizes podcasts into structured sections."},
-            {"role": "user", "content": full_prompt}
+            {"role": "user", "content": rendered_prompt}
         ]
     )
 
