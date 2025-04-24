@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from routers.auth import auth_router
 from routers.podcast import podcast_router
+from routers.user import user_router
 from database import init_db
 from utils.whisper import initialize_whisper_model
 import signal
@@ -43,6 +44,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(podcast_router)
+app.include_router(user_router)
 
 
 if __name__ == "__main__":
