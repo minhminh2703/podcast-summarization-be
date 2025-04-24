@@ -146,11 +146,11 @@ def generate_summary_map_reduce(
     texts = text_splitter.split_text(transcript)
     docs = [Document(page_content=t) for t in texts]
     
-    # Print number of chunks and their lengths
-    print(f"Number of chunks: {len(docs)}")
-    for i, doc in enumerate(docs):
-        print(f"\n--- Chunk {i + 1} (length: {len(doc.page_content)} characters) ---")
-        print(doc.page_content)
+    # # Print number of chunks and their lengths
+    # print(f"Number of chunks: {len(docs)}")
+    # for i, doc in enumerate(docs):
+    #     print(f"\n--- Chunk {i + 1} (length: {len(doc.page_content)} characters) ---")
+    #     print(doc.page_content)
 
 
     if len(docs) == 1:
