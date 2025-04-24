@@ -4,6 +4,7 @@ from uuid import UUID
 
 class UserBase(BaseModel):
     email: EmailStr
+    profile_picture: str | None = None
 
 class UserCreate(UserBase):
     password: str
