@@ -2,6 +2,8 @@ from pydantic import BaseModel
 from enum import Enum
 from uuid import UUID
 from typing import List
+from datetime import datetime
+
 
 
 class TargetLanguage(Enum):
@@ -25,3 +27,4 @@ class PodcastSummarizationResponse(BaseModel):
     thumbnail_url: str
     title: str
     overall_summarization: str
+    created_at: datetime

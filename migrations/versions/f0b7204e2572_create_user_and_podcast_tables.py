@@ -38,6 +38,7 @@ def upgrade() -> None:
         sa.Column('target_language', sa.String(length=50), nullable=True),
         sa.Column('audio_path', sa.String(length=255), nullable=False),
         sa.Column('duration', sa.Float(), nullable=True),
+        sa.Column('created_at', sa.TIMESTAMP(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
         sa.ForeignKeyConstraint(['userid'], ['users.userid'], ondelete='CASCADE')
     )
     op.create_index(op.f('ix_podcasts_id'), 'podcasts', ['id'], unique=False)

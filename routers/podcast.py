@@ -13,7 +13,7 @@ from utils.dependencies import auth_middleware
 from service.podcast_service import download_audio, transcribe_audio, save_audio_info, save_summarization_heading
 from utils.audio import create_audio_name
 from service.GPT_service import generate_heading_summary
-from utils.GPT import parse_heading_sections, parse_overall_summary
+from utils.GPT import parse_headings_and_overall
 
 podcast_router = APIRouter(prefix="/podcast", tags=["Podcast"], dependencies=[Depends(auth_middleware)])
 
@@ -29,9 +29,9 @@ def summarizeVideoLink(request_data: SummarizePodcastURL, db: Session = Depends(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed transcribing audio: {str(e)}")
     response_text = generate_heading_summary(segments, request_data.target_language.value)
+    print ("GPT Response: ", response_text)
 
-    headings = parse_heading_sections(response_text)
-    overall = parse_overall_summary(response_text)
+    headings, overall = parse_headings_and_overall(response_text)
 
     audio_schema = save_audio_info(audio_path, title, thumbnail_url, user.userid, request_data.target_language, db)
     save_summarization_heading(headings, audio_schema.id, db)
@@ -41,7 +41,8 @@ def summarizeVideoLink(request_data: SummarizePodcastURL, db: Session = Depends(
         title = title,
         thumbnail_url = thumbnail_url,
         detail_summarization = headings,
-        overall_summarization = overall
+        overall_summarization = overall,
+        created_at= audio_schema.created_at
     )
     return test
         
@@ -71,7 +72,8 @@ def get_all_summarization(
             title=podcast.title,
             thumbnail_url=podcast.thumbnail_url,
             detail_summarization=headings,
-            overall_summarization=podcast.summarized_content or ""
+            overall_summarization=podcast.summarized_content or "",
+            created_at= podcast.created_at
         )
 
         result.append(response_item)

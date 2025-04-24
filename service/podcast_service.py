@@ -60,7 +60,7 @@ def save_audio_info(
         thumbnail_url=thumbnail_url,
         target_language=targetLanguage.value,
         audio_path=audio_path,
-        duration=0,  # nếu có
+        duration=0,  
     )
 
     db.add(new_podcast)
