@@ -117,14 +117,16 @@ def llm_topic_segmentation(segments: List[Dict[str, str]]) -> List[str]:
         if are_same_topic(pre_transcript, text):
             current_cluster.append(text)
         else:
-            clusters.append(f"[{cur_start} - {cur_end}]: {" ".join(current_cluster)}")
+            joined = " ".join(current_cluster)
+            clusters.append(f"[{cur_start} - {cur_end}]: {joined}")
             cur_start = seg["start"]
             current_cluster = [text]
         
         pre_transcript = text
         cur_end = seg["end"]
         
-    clusters.append(f"[{cur_start} - {cur_end}]: {" ".join(current_cluster)}")
+    joined = " ".join(current_cluster)
+    clusters.append(f"[{cur_start} - {cur_end}]: {joined}")
     return clusters
 
 
