@@ -24,6 +24,11 @@ Your tasks:
   • Provide a brief summary.
   • Include the section's start and end time.
 
+👉 The longer the section (based on its duration), the longer the summary should be.
+  • Short sections (under 1 minute): 1–2 sentences is enough.
+  • Medium sections (1–3 minutes): 2–3 sentences.
+  • Long sections (over 3 minutes): write a more detailed paragraph with key insights and transitions.
+
 Use this output format (repeat for each section):
 
 Heading {{n}} - {{Heading title in {language}}} - {{start_time}} - {{end_time}}
@@ -120,7 +125,7 @@ def generate_heading_summary(
         model="gpt-4o",
         temperature=0.3,
         messages=[
-            {"role": "system", "content": "You are a helpful assistant that summarizes podcasts into structured sections."},
+            {"role": "system", "content": f"You are a helpful assistant that summarizes podcasts into structured sections. All outputs must be written in {target_language} only. Never use English if {target_language} is not English."},
             {"role": "user", "content": rendered_prompt}
         ]
     )
@@ -129,7 +134,7 @@ def generate_heading_summary(
 
 def generate_summary_map_reduce(
     segments: List[Dict[str, str]],
-    target_language: str = "English",
+    target_language: str,
 ) -> str:
     """
     Generate a summary of the podcast transcript using GPT and LangChain. 

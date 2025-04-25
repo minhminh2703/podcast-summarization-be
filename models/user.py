@@ -1,10 +1,13 @@
 # app/schemas/user.py
 from pydantic import BaseModel, EmailStr
 from uuid import UUID
+from typing import Optional
+
 
 class UserBase(BaseModel):
     email: EmailStr
-    profile_picture: str | None = None
+    profile_picture: Optional[str] = None
+
 
 class UserCreate(UserBase):
     password: str
