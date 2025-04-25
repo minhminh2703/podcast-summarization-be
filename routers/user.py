@@ -4,8 +4,10 @@ from sqlalchemy.orm import Session
 from models.user import UserOut
 from schemas.schema import User
 from database import get_db
+from utils.dependencies import auth_middleware
 
-user_router = APIRouter(prefix="/user", tags=["User"])
+
+user_router = APIRouter(prefix="/user", tags=["User"], dependencies=[Depends(auth_middleware)])
 
 @user_router.get("/{userid}", response_model=UserOut)
 def get_user(userid: str, db: Session = Depends(get_db)):
