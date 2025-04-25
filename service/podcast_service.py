@@ -52,7 +52,8 @@ def save_audio_info(
     thumbnail_url: str,
     userid: str,
     targetLanguage: TargetLanguage, 
-    db: Session
+    db: Session,
+    overallSummarization: str,
 ) -> PodcastSchema:
     new_podcast = PodcastSchema(
         title=title,
@@ -60,7 +61,8 @@ def save_audio_info(
         thumbnail_url=thumbnail_url,
         target_language=targetLanguage.value,
         audio_path=audio_path,
-        duration=0,  
+        duration=0,
+        summarized_content= overallSummarization
     )
 
     db.add(new_podcast)
