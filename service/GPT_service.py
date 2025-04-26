@@ -147,6 +147,9 @@ def generate_summary_map_reduce(
     Returns:
         Generated summary text
     """
+    from utils.segmentation import initialize_embedder
+
+    initialize_embedder()
     transcript = format_sections(segments)
     
     llm = ChatOpenAI(

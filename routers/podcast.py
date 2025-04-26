@@ -11,7 +11,7 @@ from utils.dependencies import auth_middleware
 from sqlalchemy.orm.exc import NoResultFound
 from service.podcast_service import download_audio, transcribe_audio, save_audio_info, save_summarization_heading
 from utils.audio import create_audio_name
-from service.GPT_service import generate_heading_summary
+from service.GPT_service import generate_heading_summary, generate_summary_map_reduce
 from utils.GPT import parse_headings_and_overall
 
 podcast_router = APIRouter(prefix="/podcast", tags=["Podcast"], dependencies=[Depends(auth_middleware)])
@@ -28,6 +28,8 @@ def summarizeVideoLink(request_data: SummarizePodcastURL, db: Session = Depends(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed transcribing audio: {str(e)}")
     response_text = generate_heading_summary(segments, request_data.target_language.value)
+    # response_text = generate_summary_map_reduce(segments, request_data.target_language.value)
+
     print ("GPT Response: ", response_text)
 
     headings, overall = parse_headings_and_overall(response_text)
