@@ -43,3 +43,5 @@ class GetSinglePodcastSummarizationResponse(BaseModel):
     overall_summarization: str
     language: str
     created_at: datetime
+    podcast_url: str
+    podcast_type: str

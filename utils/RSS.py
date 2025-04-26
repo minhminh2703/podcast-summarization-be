@@ -31,7 +31,7 @@ def download_RSS(rss_url: str, local_path: str, file_name: str) -> Tuple[str, st
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
 
-        return str(audio_path), thumbnail_url, episode_title
+        return str(audio_path), thumbnail_url, episode_title, 'RSS'
 
     except Exception as e:
         raise RuntimeError(f"Download from RSS failed: {str(e)}")
