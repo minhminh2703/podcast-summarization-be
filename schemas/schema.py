@@ -28,7 +28,9 @@ class PodcastSchema(Base):
     summarized_content = Column(Text, nullable=True)
     target_language = Column(String(50), nullable=True)
     duration = Column(Float, nullable=True)
+    podcast_url = Column(Text, nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now(), nullable=False)
+    podcast_type = Column(String(10), nullable=False)
     user = relationship("User", back_populates="podcasts")  
     sections = relationship("HeadingSectionSchema", back_populates="podcast", cascade="all, delete-orphan", passive_deletes=True)
 

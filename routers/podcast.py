@@ -20,7 +20,7 @@ podcast_router = APIRouter(prefix="/podcast", tags=["Podcast"], dependencies=[De
 def summarizeVideoLink(request_data: SummarizePodcastURL, db: Session = Depends(get_db), user: User = Depends(auth_middleware)):
     file_name = create_audio_name(userid=user.userid)
     try:
-        audio_path, thumbnail_url, title = download_audio(request_data.URL, 'uploads/', file_name)
+        audio_path, thumbnail_url, title, audio_type = download_audio(request_data.URL, 'uploads/', file_name)
     except Exception as e: 
         raise HTTPException(status_code=500, detail=f"Failed downloading audio: {str(e)}")
     try: 
@@ -32,7 +32,7 @@ def summarizeVideoLink(request_data: SummarizePodcastURL, db: Session = Depends(
 
     headings, overall = parse_headings_and_overall(response_text)
 
-    podcast_shcema = save_audio_info(audio_path, title, thumbnail_url, user.userid, request_data.target_language, db, overall)
+    podcast_shcema = save_audio_info(audio_type ,request_data.URL, audio_path, title, thumbnail_url, user.userid, request_data.target_language, db, overall)
     save_summarization_heading(headings, podcast_shcema.id, db)
     
     
@@ -114,7 +114,9 @@ def get_single_summarization(
         detail_summarization = headings,
         overall_summarization = podcast.summarized_content,    
         created_at= podcast.created_at,
-        language= podcast.target_language
+        language= podcast.target_language,
+        podcast_url=podcast.podcast_url,
+        podcast_type=podcast.podcast_type
     )
 
 

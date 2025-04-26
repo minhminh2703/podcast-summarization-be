@@ -51,6 +51,6 @@ def download_single_youtube_video(video_url: str, output_path: str, file_name: s
             title = info.get('title') or file_name
             video_path = os.path.join(output_path, f"{file_name}.mp3")
             thumbnail_url = get_youtube_thumbnail_url(video_url)
-            return video_path, thumbnail_url, title
+            return video_path, thumbnail_url, title, 'youtube'
     except Exception as e:
         raise RuntimeError(f"Download from YouTube failed: {str(e)}")

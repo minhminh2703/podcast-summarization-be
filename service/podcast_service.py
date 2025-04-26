@@ -22,7 +22,7 @@ import uuid
 # ========================
 # Unified download handler
 # ========================
-def download_audio(link: str, output_path: str, file_name: str) -> Tuple[str, str, str]:
+def download_audio(link: str, output_path: str, file_name: str) -> Tuple[str, str, str, str]:
     try:
         os.makedirs(output_path, exist_ok=True)
         if "youtube.com" in link or "youtu.be" in link:
@@ -47,6 +47,8 @@ def transcribe_audio(audio_path: str) -> Tuple[str, list[str], float]:
         raise RuntimeError(f"Transcription failed: {str(e)}")
     
 def save_audio_info(
+    podcast_type: str,
+    podcast_url: str,
     audio_path: str,
     title: str,
     thumbnail_url: str,
@@ -62,7 +64,9 @@ def save_audio_info(
         target_language=targetLanguage.value,
         audio_path=audio_path,
         duration=0,
-        summarized_content= overallSummarization
+        summarized_content= overallSummarization,
+        podcast_url = podcast_url,
+        podcast_type=podcast_type
     )
 
     db.add(new_podcast)
