@@ -119,6 +119,5 @@ def get_single_summarization(
         podcast_type=podcast.podcast_type
     )
 
-
     return response
 
